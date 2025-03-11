@@ -9,7 +9,31 @@
   <body>
     <h1>MY library</h1>
     <div id="booksContainer"></div>
-    <button class="add-book">Add Book</button>
+
+    <button id="openDialog" class="add-book">Add Book</button>
+
+    <dialog id="myDialog">
+      <img id="close-icon" class="close" src="./img/remove.png" alt="close" />
+      <form id="book-form" method="dialog">
+        <div class="input">
+          <label for="title">book title</label>
+          <input id="title" type="text" placeholder="title" />
+        </div>
+        <div class="input">
+          <label for="author">Author</label>
+          <input id="author" type="text" placeholder="Author" />
+        </div>
+        <div class="input">
+          <label for="pages">pages</label>
+          <input id="pages" type="number" placeholder="Num pages" />
+        </div>
+        <div class="input">
+          <h5>have you read it yet?</h5>
+          <label> <input type="checkbox" id="read" /> read? </label>
+        </div>
+        <button id="addBook" class="submit" type="submit">add</button>
+      </form>
+    </dialog>
     <script src="./script.js"></script>
   </body>
 </html>

@@ -1,4 +1,31 @@
 const booksContainer = document.getElementById("booksContainer");
+const dialog = document.getElementById("myDialog");
+const openDialog = document.getElementById("openDialog");
+const closeDialog = document.getElementById("close-icon");
+
+document
+  .getElementById("book-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pages").value;
+    const read = document.getElementById("read").checked;
+
+    addBookToLibrary(title, author, pages, read);
+
+    // Limpiar el formulario después de agregar el libro
+    this.reset();
+  });
+
+openDialog.addEventListener("click", () => {
+  dialog.showModal();
+});
+
+closeDialog.addEventListener("click", () => {
+  dialog.close();
+});
 
 const myLibrary = [];
 
@@ -7,22 +34,20 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.read = read;
-  this.id = crypto.randomUUID();
-  this.info = function () {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${
-      this.read ? "read" : "not read yet"
-    }.`;
-  };
+  this.id = crypto.randomUUID(); // Se usa un ID único
 }
+
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
 
 function addBookToLibrary(title, author, pages, read) {
   const book = new Book(title, author, pages, read);
   myLibrary.push(book);
-  return book;
+  updateLibrary();
 }
 
-const book1 = addBookToLibrary("harry potter", "Juan", 235, false);
-const book2 = addBookToLibrary("cien anos de soledad", "Pepe", 235, false);
+const book1 = addBookToLibrary("Harry Potter", "J.K. Rowling", 235, false);
 
 function updateLibrary() {
   booksContainer.innerHTML = "";
@@ -35,13 +60,27 @@ function updateLibrary() {
         <h3>${book.title}</h3>
         <p><strong>Author:</strong> ${book.author}</p>
         <p><strong>Pages:</strong> ${book.pages}</p>
-        <p><strong>State:</strong> ${book.read ? "📖 read " : "📕 Not read"}</p>
-        <button onclick="removeBook('${book.id}')">Delate </button>
+        <p><strong>State:</strong> ${book.read ? "📖 Read" : "📕 Not read"}</p>
+        <button onclick="removeBook('${book.id}')">Delete</button>
+        <button onclick="toggleBookRead('${book.id}')">Change State</button>
     `;
+
     booksContainer.appendChild(bookCard);
   });
 }
 
-updateLibrary();
+function removeBook(id) {
+  const index = myLibrary.findIndex((book) => book.id === id);
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+    updateLibrary();
+  }
+}
 
-console.log(myLibrary);
+function toggleBookRead(id) {
+  const book = myLibrary.find((book) => book.id === id);
+  if (book) {
+    book.toggleRead();
+    updateLibrary();
+  }
+}
