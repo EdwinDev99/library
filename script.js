@@ -29,12 +29,14 @@ closeDialog.addEventListener("click", () => {
 
 const myLibrary = [];
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.id = crypto.randomUUID(); // Se usa un ID único
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.id = crypto.randomUUID(); // Se usa un ID único
+  }
 }
 
 Book.prototype.toggleRead = function () {
